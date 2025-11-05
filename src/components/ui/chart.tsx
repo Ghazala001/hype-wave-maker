@@ -58,6 +58,12 @@ const ChartContainer = React.forwardRef<
 });
 ChartContainer.displayName = "Chart";
 
+// SECURITY WARNING: This component uses dangerouslySetInnerHTML to inject CSS styles.
+// Current usage is SAFE because chart configurations are hardcoded in components.
+// BEFORE allowing user-controllable chart configurations or themes:
+// 1. Implement CSS value sanitization to prevent XSS attacks
+// 2. Validate all color values against a strict pattern (hex, rgb, hsl only)
+// 3. Consider using React style objects instead of dangerouslySetInnerHTML
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(([_, config]) => config.theme || config.color);
 

@@ -5,6 +5,24 @@ import { Card } from "@/components/ui/card";
 import { Sparkles, Video, TrendingUp, Target, Zap } from "lucide-react";
 import AnalysisResults from "@/components/AnalysisResults";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+// URL validation schema for security
+const videoUrlSchema = z.string()
+  .trim()
+  .url({ message: "Must be a valid URL" })
+  .max(2000, { message: "URL too long" })
+  .refine(
+    (url) => {
+      try {
+        const parsed = new URL(url);
+        return ['http:', 'https:'].includes(parsed.protocol);
+      } catch {
+        return false;
+      }
+    },
+    { message: "Only HTTP/HTTPS URLs are allowed" }
+  );
 
 const Index = () => {
   const [videoUrl, setVideoUrl] = useState("");
@@ -13,21 +31,16 @@ const Index = () => {
   const { toast } = useToast();
 
   const handleAnalyze = async () => {
-    if (!videoUrl.trim()) {
-      toast({
-        title: "Video URL required",
-        description: "Please enter a valid video URL to analyze",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsAnalyzing(true);
+    // Validate URL for security
+    try {
+      const validatedUrl = videoUrlSchema.parse(videoUrl);
+      
+      setIsAnalyzing(true);
     
-    // Simulate AI analysis - will be replaced with actual Lovable AI integration
-    setTimeout(() => {
-      setAnalysisData({
-        url: videoUrl,
+      // Simulate AI analysis - will be replaced with actual Lovable AI integration
+      setTimeout(() => {
+        setAnalysisData({
+          url: validatedUrl,
         titleSuggestions: [
           "10 Game-Changing Tips That Will Transform Your Content",
           "The Ultimate Guide: Everything You Need to Know",
@@ -53,11 +66,20 @@ const Index = () => {
         }
       });
       setIsAnalyzing(false);
-      toast({
-        title: "Analysis complete!",
-        description: "Your video insights are ready",
-      });
-    }, 3000);
+        toast({
+          title: "Analysis complete!",
+          description: "Your video insights are ready",
+        });
+      }, 3000);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Invalid URL",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   return (
