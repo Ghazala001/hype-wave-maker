@@ -39,14 +39,31 @@ const Home = () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       const mockResults = {
-        title: "Sample Video Analysis",
-        views: 125000,
-        engagement: 8.5,
-        suggestions: [
-          "Consider adding more call-to-actions in the first 30 seconds",
-          "Your thumbnail could benefit from brighter colors",
-          "Tags optimization needed for better discoverability"
-        ]
+        url: validatedUrl,
+        titleSuggestions: [
+          "10 Secrets That Will Transform Your Content Strategy",
+          "How I Gained 100K Subscribers Using This ONE Trick",
+          "You Won't Believe What Happened When I Tried This..."
+        ],
+        thumbnailIdeas: [
+          "Use a close-up reaction shot with bright contrasting colors",
+          "Split-screen comparison showing before/after results",
+          "Bold text overlay with emoji and high contrast background"
+        ],
+        seoKeywords: [
+          "video optimization",
+          "youtube growth",
+          "content strategy",
+          "viral videos",
+          "creator tips",
+          "SEO techniques"
+        ],
+        summary: "This video demonstrates effective content creation strategies with strong engagement potential. The pacing is good, but consider adding more visual variety in the first 30 seconds to hook viewers immediately.",
+        metrics: {
+          estimatedReach: "50K-100K",
+          viralPotential: "High",
+          retentionScore: 8.5
+        }
       };
       
       setAnalysisData(mockResults);
