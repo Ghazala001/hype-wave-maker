@@ -73,6 +73,11 @@ const Home = () => {
     }
   };
 
+  const handleNewAnalysis = () => {
+    setAnalysisData(null);
+    setVideoUrl("");
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
@@ -114,7 +119,7 @@ const Home = () => {
         {analysisData && (
           <section className="py-12 px-4 bg-muted/30">
             <div className="container mx-auto">
-              <AnalysisResults data={analysisData} />
+              <AnalysisResults data={analysisData} onNewAnalysis={handleNewAnalysis} />
             </div>
           </section>
         )}
