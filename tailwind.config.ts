@@ -83,10 +83,36 @@ export default {
             height: "0",
           },
         },
+        "wave": {
+          "0%": { backgroundPositionX: "0%" },
+          "100%": { backgroundPositionX: "100%" }
+        },
+        "wave2": {
+          "0%": { backgroundPositionX: "100%" },
+          "100%": { backgroundPositionX: "0%" }
+        },
+        "float": {
+          "0%, 100%": { 
+            transform: "translateY(0) rotate(0deg)", 
+            opacity: "0.8" 
+          },
+          "50%": { 
+            transform: "translateY(-20px) rotate(180deg)", 
+            opacity: "1" 
+          }
+        },
+        "glow": {
+          from: { filter: "drop-shadow(0 0 20px hsl(var(--accent)))" },
+          to: { filter: "drop-shadow(0 0 40px hsl(var(--primary)))" }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "wave": "wave 12s linear infinite",
+        "wave2": "wave2 18s linear infinite",
+        "float": "float 6s ease-in-out infinite",
+        "glow": "glow 2s ease-in-out infinite alternate",
       },
     },
   },
