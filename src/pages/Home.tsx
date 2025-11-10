@@ -187,89 +187,107 @@ const Home = () => {
         )}
 
         {/* Key Benefits */}
-        <section className="py-20 px-4 bg-muted/30">
-          <div className="container mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+        <section className="relative py-20 px-4 bg-gradient-to-b from-[#0f1a3b] via-[#1a1f3a] to-[#0a0e1a] overflow-hidden">
+          {/* Background Glow Effects */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-[100px]" />
+          
+          <div className="container mx-auto relative z-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
               Why Creators Love Hype Wave Maker
             </h2>
+            <p className="text-center text-cyan-300/70 mb-12 max-w-2xl mx-auto">
+              Powerful AI tools designed to skyrocket your YouTube success
+            </p>
             
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <Card>
-                <CardContent className="pt-6">
-                  <TrendingUp className="h-12 w-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Boost Your Views</h3>
-                  <p className="text-muted-foreground">
-                    Get data-driven recommendations to optimize titles, thumbnails, and descriptions for maximum reach.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="group bg-gradient-to-br from-blue-900/40 to-cyan-900/20 backdrop-blur-xl rounded-2xl p-6 border border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/20">
+                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ boxShadow: '0 0 20px rgba(34, 211, 238, 0.4)' }}>
+                  <TrendingUp className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-cyan-100">Boost Your Views</h3>
+                <p className="text-cyan-300/70 leading-relaxed">
+                  Get data-driven recommendations to optimize titles, thumbnails, and descriptions for maximum reach.
+                </p>
+              </div>
               
-              <Card>
-                <CardContent className="pt-6">
-                  <Sparkles className="h-12 w-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">AI-Powered Insights</h3>
-                  <p className="text-muted-foreground">
-                    Our advanced AI analyzes thousands of successful videos to give you winning strategies.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="group bg-gradient-to-br from-purple-900/40 to-pink-900/20 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 hover:border-purple-400/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/20">
+                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ boxShadow: '0 0 20px rgba(192, 132, 252, 0.4)' }}>
+                  <Sparkles className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-purple-100">AI-Powered Insights</h3>
+                <p className="text-purple-300/70 leading-relaxed">
+                  Our advanced AI analyzes thousands of successful videos to give you winning strategies.
+                </p>
+              </div>
               
-              <Card>
-                <CardContent className="pt-6">
-                  <BarChart3 className="h-12 w-12 text-primary mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Track Your Growth</h3>
-                  <p className="text-muted-foreground">
-                    Monitor your performance with detailed analytics and see your channel grow in real-time.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="group bg-gradient-to-br from-orange-900/40 to-yellow-900/20 backdrop-blur-xl rounded-2xl p-6 border border-orange-500/20 hover:border-orange-400/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/20">
+                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ boxShadow: '0 0 20px rgba(251, 146, 60, 0.4)' }}>
+                  <BarChart3 className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-orange-100">Track Your Growth</h3>
+                <p className="text-orange-300/70 leading-relaxed">
+                  Monitor your performance with detailed analytics and see your channel grow in real-time.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Features Overview */}
-        <section className="py-20 px-4">
-          <div className="container mx-auto max-w-5xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+        <section className="relative py-20 px-4 bg-gradient-to-b from-[#0a0e1a] to-[#0f1a3b]">
+          <div className="container mx-auto max-w-5xl relative z-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 bg-clip-text text-transparent">
               Everything You Need to Succeed
             </h2>
+            <p className="text-center text-blue-300/70 mb-12">
+              Comprehensive tools for video optimization and growth
+            </p>
             
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="flex gap-4">
-                <Target className="h-8 w-8 text-primary flex-shrink-0" />
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="flex gap-4 p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-blue-500/20 hover:border-blue-400/40 transition-all duration-300 hover:bg-white/10 group">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style={{ boxShadow: '0 0 15px rgba(59, 130, 246, 0.3)' }}>
+                  <Target className="h-6 w-6 text-white" />
+                </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">SEO Optimization</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-semibold mb-2 text-blue-100">SEO Optimization</h3>
+                  <p className="text-blue-300/70">
                     Get keyword suggestions, tag recommendations, and title improvements to rank higher in search.
                   </p>
                 </div>
               </div>
               
-              <div className="flex gap-4">
-                <Sparkles className="h-8 w-8 text-primary flex-shrink-0" />
+              <div className="flex gap-4 p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-purple-500/20 hover:border-purple-400/40 transition-all duration-300 hover:bg-white/10 group">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style={{ boxShadow: '0 0 15px rgba(168, 85, 247, 0.3)' }}>
+                  <Sparkles className="h-6 w-6 text-white" />
+                </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Thumbnail Analyzer</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-semibold mb-2 text-purple-100">Thumbnail Analyzer</h3>
+                  <p className="text-purple-300/70">
                     AI-powered thumbnail analysis shows you what works and what doesn't before you publish.
                   </p>
                 </div>
               </div>
               
-              <div className="flex gap-4">
-                <BarChart3 className="h-8 w-8 text-primary flex-shrink-0" />
+              <div className="flex gap-4 p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-orange-500/20 hover:border-orange-400/40 transition-all duration-300 hover:bg-white/10 group">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style={{ boxShadow: '0 0 15px rgba(249, 115, 22, 0.3)' }}>
+                  <BarChart3 className="h-6 w-6 text-white" />
+                </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Performance Dashboard</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-semibold mb-2 text-orange-100">Performance Dashboard</h3>
+                  <p className="text-orange-300/70">
                     Track views, engagement, and growth metrics all in one beautiful, easy-to-use dashboard.
                   </p>
                 </div>
               </div>
               
-              <div className="flex gap-4">
-                <TrendingUp className="h-8 w-8 text-primary flex-shrink-0" />
+              <div className="flex gap-4 p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-green-500/20 hover:border-green-400/40 transition-all duration-300 hover:bg-white/10 group">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-green-500 to-cyan-500 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform" style={{ boxShadow: '0 0 15px rgba(34, 197, 94, 0.3)' }}>
+                  <TrendingUp className="h-6 w-6 text-white" />
+                </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Trend Detection</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-xl font-semibold mb-2 text-green-100">Trend Detection</h3>
+                  <p className="text-green-300/70">
                     Stay ahead with AI that spots trending topics and suggests content ideas for your niche.
                   </p>
                 </div>
@@ -279,59 +297,81 @@ const Home = () => {
         </section>
 
         {/* Testimonials */}
-        <section className="py-20 px-4 bg-muted/30">
-          <div className="container mx-auto max-w-5xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+        <section className="relative py-20 px-4 bg-gradient-to-b from-[#0f1a3b] to-[#0a0e1a] overflow-hidden">
+          {/* Background Effects */}
+          <div className="absolute top-0 right-0 w-72 h-72 bg-purple-500/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-blue-500/10 rounded-full blur-[120px]" />
+          
+          <div className="container mx-auto max-w-5xl relative z-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
               What Creators Are Saying
             </h2>
+            <p className="text-center text-purple-300/70 mb-12">
+              Join thousands of creators growing their channels
+            </p>
             
             <div className="grid md:grid-cols-3 gap-8">
-              <Card>
-                <CardContent className="pt-6">
-                  <Quote className="h-8 w-8 text-primary mb-4" />
-                  <p className="text-muted-foreground mb-4">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all" />
+                <div className="relative bg-gradient-to-br from-blue-900/50 to-cyan-900/30 backdrop-blur-xl rounded-2xl p-6 border border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center mb-4" style={{ boxShadow: '0 0 20px rgba(34, 211, 238, 0.4)' }}>
+                    <Quote className="h-6 w-6 text-white" />
+                  </div>
+                  <p className="text-cyan-100/80 mb-6 italic">
                     "Hype Wave Maker helped me double my views in just two months. The AI insights are incredible!"
                   </p>
-                  <div className="font-semibold">Sarah Johnson</div>
-                  <div className="text-sm text-muted-foreground">Tech Review Channel</div>
-                </CardContent>
-              </Card>
+                  <div className="font-semibold text-cyan-100">Sarah Johnson</div>
+                  <div className="text-sm text-cyan-300/60">Tech Review Channel</div>
+                </div>
+              </div>
               
-              <Card>
-                <CardContent className="pt-6">
-                  <Quote className="h-8 w-8 text-primary mb-4" />
-                  <p className="text-muted-foreground mb-4">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all" />
+                <div className="relative bg-gradient-to-br from-purple-900/50 to-pink-900/30 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center mb-4" style={{ boxShadow: '0 0 20px rgba(192, 132, 252, 0.4)' }}>
+                    <Quote className="h-6 w-6 text-white" />
+                  </div>
+                  <p className="text-purple-100/80 mb-6 italic">
                     "Finally, a tool that actually understands what makes videos go viral. Game changer for my channel!"
                   </p>
-                  <div className="font-semibold">Marcus Chen</div>
-                  <div className="text-sm text-muted-foreground">Gaming Content Creator</div>
-                </CardContent>
-              </Card>
+                  <div className="font-semibold text-purple-100">Marcus Chen</div>
+                  <div className="text-sm text-purple-300/60">Gaming Content Creator</div>
+                </div>
+              </div>
               
-              <Card>
-                <CardContent className="pt-6">
-                  <Quote className="h-8 w-8 text-primary mb-4" />
-                  <p className="text-muted-foreground mb-4">
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-yellow-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all" />
+                <div className="relative bg-gradient-to-br from-orange-900/50 to-yellow-900/30 backdrop-blur-xl rounded-2xl p-6 border border-orange-500/30 hover:border-orange-400/50 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center mb-4" style={{ boxShadow: '0 0 20px rgba(251, 146, 60, 0.4)' }}>
+                    <Quote className="h-6 w-6 text-white" />
+                  </div>
+                  <p className="text-orange-100/80 mb-6 italic">
                     "The thumbnail analyzer alone is worth it. My click-through rate has increased by 40%!"
                   </p>
-                  <div className="font-semibold">Emily Rodriguez</div>
-                  <div className="text-sm text-muted-foreground">Lifestyle Vlogger</div>
-                </CardContent>
-              </Card>
+                  <div className="font-semibold text-orange-100">Emily Rodriguez</div>
+                  <div className="text-sm text-orange-300/60">Lifestyle Vlogger</div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4">
-          <div className="container mx-auto text-center max-w-3xl">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+        <section className="relative py-20 px-4 bg-gradient-to-b from-[#0a0e1a] to-[#0f1a3b]">
+          <div className="container mx-auto text-center max-w-3xl relative z-10">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-[100px]" />
+            
+            <h2 className="relative text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-pink-500 to-yellow-400 bg-clip-text text-transparent">
               Ready to Grow Your Channel?
             </h2>
-            <p className="text-xl text-muted-foreground mb-8">
+            <p className="relative text-xl text-blue-200/80 mb-8">
               Join thousands of creators who are already using AI to optimize their content and grow faster.
             </p>
-            <Button size="lg" asChild>
+            <Button 
+              size="lg" 
+              asChild
+              className="relative bg-gradient-to-r from-pink-600 via-orange-500 to-yellow-500 hover:from-pink-500 hover:via-orange-400 hover:to-yellow-400 text-white border-none shadow-lg hover:shadow-2xl hover:shadow-orange-500/50 transform hover:-translate-y-1 transition-all duration-300 text-lg px-8 py-6"
+            >
               <NavLink to="/">Try it Free - No Credit Card Required</NavLink>
             </Button>
           </div>
