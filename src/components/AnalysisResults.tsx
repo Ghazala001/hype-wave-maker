@@ -61,6 +61,11 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
     try {
       setGeneratingShorts(true);
       
+      console.log('Generating shorts with data:', {
+        analysisId: data.analysisId,
+        videoId: data.videoId
+      });
+      
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-shorts`, {
         method: 'POST',
         headers: {
@@ -72,12 +77,13 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate shorts');
-      }
-
+      console.log('Response status:', response.status);
       const results = await response.json();
+      console.log('Response data:', results);
+
+      if (!response.ok) {
+        throw new Error(results.error || 'Failed to generate shorts');
+      }
       
       if (!results.success) {
         throw new Error(results.error || 'Shorts generation failed');
@@ -87,7 +93,7 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
       
       toast({
         title: "Shorts Generated! 🎉",
-        description: `${results.shorts.length} viral shorts are ready to view`,
+        description: `${results.shorts.length} viral shorts तैयार हैं`,
       });
 
       // Scroll to shorts section
@@ -98,9 +104,10 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
         });
       }, 300);
     } catch (error) {
+      console.error('Error generating shorts:', error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to generate shorts",
+        description: error instanceof Error ? error.message : "Shorts generate करने में समस्या आई",
         variant: "destructive",
       });
     } finally {
@@ -263,6 +270,36 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
         </div>
       </Card>
 
+      {/* Viral Moments */}
+      {data.viralMoments && data.viralMoments.length > 0 && (
+        <Card className="p-6 border-green-500/20 bg-gradient-to-br from-green-900/10 to-emerald-900/10">
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold mb-2">Viral Moments Detected</h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                {data.viralMoments.length} engaging moments जहाँ से shorts बनाए जा सकते हैं
+              </p>
+              <div className="space-y-3">
+                {data.viralMoments.map((moment, index) => (
+                  <div 
+                    key={index}
+                    className="flex items-start gap-3 p-4 rounded-lg bg-background/50 hover:bg-background/80 transition-smooth border border-green-500/20"
+                  >
+                    <Badge variant="outline" className="mt-0.5 flex-shrink-0 bg-green-500/10 border-green-500/30">
+                      {moment.timestamp}
+                    </Badge>
+                    <p className="flex-1 text-sm">{moment.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
+
       {/* Generate Shorts CTA */}
       {!generatedShorts.length && (
         <div className="relative">
@@ -270,29 +307,35 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
           <Card className="relative p-8 border-green-500/30 bg-gradient-to-br from-green-900/20 to-emerald-900/20 backdrop-blur-xl text-center">
             <Sparkles className="w-12 h-12 mx-auto mb-4 text-green-400" />
             <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
-              Ready to Generate Viral Shorts?
+              Viral Shorts बनाने के लिए तैयार?
             </h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Our AI will automatically create 3 optimized short clips from your video's most engaging moments
+              हमारा AI आपकी video के सबसे engaging moments से 3 optimized short clips automatically create करेगा
             </p>
-            <Button
-              size="lg"
-              onClick={handleGenerateShorts}
-              disabled={generatingShorts}
-              className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 hover:from-green-500 hover:via-emerald-400 hover:to-teal-400 text-white border-none shadow-lg hover:shadow-2xl hover:shadow-green-500/50 transform hover:-translate-y-1 transition-all duration-300 text-lg px-8"
-            >
-              {generatingShorts ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                  Generating Shorts...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="mr-2 h-5 w-5" />
-                  Generate 3 Viral Shorts
-                </>
-              )}
-            </Button>
+            {data.viralMoments && data.viralMoments.length > 0 ? (
+              <Button
+                size="lg"
+                onClick={handleGenerateShorts}
+                disabled={generatingShorts}
+                className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 hover:from-green-500 hover:via-emerald-400 hover:to-teal-400 text-white border-none shadow-lg hover:shadow-2xl hover:shadow-green-500/50 transform hover:-translate-y-1 transition-all duration-300 text-lg px-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                {generatingShorts ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                    Shorts बना रहे हैं...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-5 w-5" />
+                    3 Viral Shorts Generate करें
+                  </>
+                )}
+              </Button>
+            ) : (
+              <p className="text-yellow-400 text-sm">
+                इस video में viral moments detect नहीं हुए। कृपया दूसरी video try करें।
+              </p>
+            )}
           </Card>
         </div>
       )}
