@@ -189,9 +189,9 @@ const Home = () => {
               <Button
                 onClick={handleAnalyze}
                 disabled={isAnalyzing || !videoUrl}
-                className="mt-4 w-full py-3 px-6 rounded-full font-semibold text-white bg-gradient-to-r from-pink-600 via-orange-500 to-yellow-500 shadow-lg hover:shadow-2xl hover:shadow-orange-500/50 transform hover:-translate-y-1 transition-all duration-300 border-none"
+                className="mt-4 w-full py-3 px-6 rounded-full font-semibold text-white bg-gradient-to-r from-pink-600 via-orange-500 to-yellow-500 shadow-lg hover:shadow-2xl hover:shadow-orange-500/50 transform hover:-translate-y-1 transition-all duration-300 border-none disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
               >
-                {isAnalyzing ? "Analyzing..." : "Try it Free"}
+                {isAnalyzing ? "Analyzing..." : !videoUrl ? "Enter a video URL first" : "Try it Free"}
               </Button>
             </div>
 
