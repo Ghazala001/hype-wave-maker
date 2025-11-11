@@ -93,14 +93,14 @@ Please provide:
 
 Return as JSON with keys: estimatedReach, viralPotential, retentionScore, contentSummary, viralMoments (array of {timestamp, description, startSeconds})`;
 
-    const geminiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/chat/completions', {
+    const geminiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${geminiApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.0-flash',
         messages: [
           { role: 'system', content: 'You are an expert YouTube content analyzer. Always respond with valid JSON.' },
           { role: 'user', content: analysisPrompt }
