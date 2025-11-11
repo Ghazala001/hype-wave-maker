@@ -36,37 +36,60 @@ const Home = () => {
       const validatedUrl = videoUrlSchema.parse(videoUrl);
       
       setIsAnalyzing(true);
-      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const mockResults = {
+      // Call the analyze-video edge function
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ videoUrl: validatedUrl }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to analyze video');
+      }
+
+      const results = await response.json();
+      
+      if (!results.success) {
+        throw new Error(results.error || 'Analysis failed');
+      }
+
+      // Format the results for the AnalysisResults component
+      setAnalysisData({
         url: validatedUrl,
+        videoId: results.videoId,
+        analysisId: results.analysisId,
+        videoTitle: results.videoTitle,
+        videoThumbnail: results.videoThumbnail,
         titleSuggestions: [
-          "10 Secrets That Will Transform Your Content Strategy",
-          "How I Gained 100K Subscribers Using This ONE Trick",
-          "You Won't Believe What Happened When I Tried This..."
+          results.videoTitle,
+          `${results.videoTitle} - Viral Edition`,
+          `${results.videoTitle} - Must Watch!`
         ],
         thumbnailIdeas: [
-          "Use a close-up reaction shot with bright contrasting colors",
-          "Split-screen comparison showing before/after results",
-          "Bold text overlay with emoji and high contrast background"
+          "High-energy moment from video",
+          "Contrasting before/after split",
+          "Bold text with emoji overlay"
         ],
         seoKeywords: [
-          "video optimization",
-          "youtube growth",
-          "content strategy",
-          "viral videos",
-          "creator tips",
-          "SEO techniques"
+          "viral video",
+          "youtube shorts",
+          "trending content",
+          results.viralPotential.toLowerCase(),
+          "engagement"
         ],
-        summary: "This video demonstrates effective content creation strategies with strong engagement potential. The pacing is good, but consider adding more visual variety in the first 30 seconds to hook viewers immediately.",
+        summary: results.contentSummary || 'Video analyzed successfully',
         metrics: {
-          estimatedReach: "50K-100K",
-          viralPotential: "High",
-          retentionScore: 8.5
-        }
-      };
+          estimatedReach: results.estimatedReach,
+          viralPotential: results.viralPotential,
+          retentionScore: results.retentionScore
+        },
+        viralMoments: results.viralMoments || []
+      });
       
-      setAnalysisData(mockResults);
       toast({
         title: "Analysis Complete!",
         description: "Your video insights are ready.",
@@ -81,7 +104,7 @@ const Home = () => {
       } else {
         toast({
           title: "Error",
-          description: "Failed to analyze video. Please try again.",
+          description: error instanceof Error ? error.message : "Failed to analyze video. Please try again.",
           variant: "destructive",
         });
       }

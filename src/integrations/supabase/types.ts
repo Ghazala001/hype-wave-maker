@@ -14,7 +14,101 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      generated_shorts: {
+        Row: {
+          analysis_id: string
+          created_at: string
+          description: string | null
+          end_time: number
+          id: string
+          short_number: number
+          start_time: number
+          storage_path: string | null
+          storage_url: string | null
+          title: string
+        }
+        Insert: {
+          analysis_id: string
+          created_at?: string
+          description?: string | null
+          end_time: number
+          id?: string
+          short_number: number
+          start_time: number
+          storage_path?: string | null
+          storage_url?: string | null
+          title: string
+        }
+        Update: {
+          analysis_id?: string
+          created_at?: string
+          description?: string | null
+          end_time?: number
+          id?: string
+          short_number?: number
+          start_time?: number
+          storage_path?: string | null
+          storage_url?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generated_shorts_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "video_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_analyses: {
+        Row: {
+          content_summary: string | null
+          created_at: string
+          estimated_reach: string | null
+          id: string
+          retention_score: number | null
+          transcript: string | null
+          video_duration: number | null
+          video_id: string
+          video_thumbnail: string | null
+          video_title: string | null
+          video_url: string
+          viral_moments: Json | null
+          viral_potential: string | null
+        }
+        Insert: {
+          content_summary?: string | null
+          created_at?: string
+          estimated_reach?: string | null
+          id?: string
+          retention_score?: number | null
+          transcript?: string | null
+          video_duration?: number | null
+          video_id: string
+          video_thumbnail?: string | null
+          video_title?: string | null
+          video_url: string
+          viral_moments?: Json | null
+          viral_potential?: string | null
+        }
+        Update: {
+          content_summary?: string | null
+          created_at?: string
+          estimated_reach?: string | null
+          id?: string
+          retention_score?: number | null
+          transcript?: string | null
+          video_duration?: number | null
+          video_id?: string
+          video_thumbnail?: string | null
+          video_title?: string | null
+          video_url?: string
+          viral_moments?: Json | null
+          viral_potential?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

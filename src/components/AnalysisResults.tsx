@@ -11,14 +11,18 @@ import {
   Image as ImageIcon,
   RefreshCw,
   Copy,
-  Check
+  Check,
+  Sparkles
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import GeneratedShorts from "./GeneratedShorts";
 
 interface AnalysisResultsProps {
   data: {
     url: string;
+    videoId: string;
+    analysisId: string;
     titleSuggestions: string[];
     thumbnailIdeas: string[];
     seoKeywords: string[];
@@ -28,12 +32,19 @@ interface AnalysisResultsProps {
       viralPotential: string;
       retentionScore: number;
     };
+    viralMoments?: Array<{
+      timestamp: string;
+      description: string;
+      startSeconds: number;
+    }>;
   };
   onNewAnalysis: () => void;
 }
 
 const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [generatingShorts, setGeneratingShorts] = useState(false);
+  const [generatedShorts, setGeneratedShorts] = useState<any[]>([]);
   const { toast } = useToast();
 
   const copyToClipboard = (text: string, index: number) => {
@@ -44,6 +55,57 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
       title: "Copied!",
       description: "Text copied to clipboard",
     });
+  };
+
+  const handleGenerateShorts = async () => {
+    try {
+      setGeneratingShorts(true);
+      
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-shorts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          analysisId: data.analysisId,
+          videoId: data.videoId
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate shorts');
+      }
+
+      const results = await response.json();
+      
+      if (!results.success) {
+        throw new Error(results.error || 'Shorts generation failed');
+      }
+
+      setGeneratedShorts(results.shorts);
+      
+      toast({
+        title: "Shorts Generated! 🎉",
+        description: `${results.shorts.length} viral shorts are ready to view`,
+      });
+
+      // Scroll to shorts section
+      setTimeout(() => {
+        document.getElementById('generated-shorts')?.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 300);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to generate shorts",
+        variant: "destructive",
+      });
+    } finally {
+      setGeneratingShorts(false);
+    }
   };
 
   return (
@@ -200,6 +262,47 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
           </div>
         </div>
       </Card>
+
+      {/* Generate Shorts CTA */}
+      {!generatedShorts.length && (
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl" />
+          <Card className="relative p-8 border-green-500/30 bg-gradient-to-br from-green-900/20 to-emerald-900/20 backdrop-blur-xl text-center">
+            <Sparkles className="w-12 h-12 mx-auto mb-4 text-green-400" />
+            <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
+              Ready to Generate Viral Shorts?
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+              Our AI will automatically create 3 optimized short clips from your video's most engaging moments
+            </p>
+            <Button
+              size="lg"
+              onClick={handleGenerateShorts}
+              disabled={generatingShorts}
+              className="bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 hover:from-green-500 hover:via-emerald-400 hover:to-teal-400 text-white border-none shadow-lg hover:shadow-2xl hover:shadow-green-500/50 transform hover:-translate-y-1 transition-all duration-300 text-lg px-8"
+            >
+              {generatingShorts ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                  Generating Shorts...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  Generate 3 Viral Shorts
+                </>
+              )}
+            </Button>
+          </Card>
+        </div>
+      )}
+
+      {/* Generated Shorts Section */}
+      {generatedShorts.length > 0 && (
+        <div id="generated-shorts">
+          <GeneratedShorts shorts={generatedShorts} />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,1 +1,7 @@
 project_id = "mgetcfckovgytvoyktke"
+
+[functions.analyze-video]
+verify_jwt = false
+
+[functions.generate-shorts]
+verify_jwt = false
