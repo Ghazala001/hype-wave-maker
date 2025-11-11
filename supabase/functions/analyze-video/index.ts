@@ -93,7 +93,7 @@ Please provide:
 
 Return as JSON with keys: estimatedReach, viralPotential, retentionScore, contentSummary, viralMoments (array of {timestamp, description, startSeconds})`;
 
-    const geminiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', {
+    const geminiResponse = await fetch('https://generativelanguage.googleapis.com/v1beta/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${geminiApiKey}`,
