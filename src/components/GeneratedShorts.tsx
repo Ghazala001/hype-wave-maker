@@ -22,25 +22,46 @@ interface GeneratedShortsProps {
 const GeneratedShorts = ({ shorts }: GeneratedShortsProps) => {
   const { toast } = useToast();
 
-  const handleShare = (short: Short) => {
+  const handleShare = async (short: Short) => {
+    const shareUrl = short.downloadUrl || short.previewUrl;
+    
     if (navigator.share) {
-      navigator.share({
-        title: short.title,
-        text: short.description,
-        url: short.previewUrl,
-      }).catch(() => {
+      try {
+        await navigator.share({
+          title: short.title,
+          text: short.description,
+          url: shareUrl,
+        });
         toast({
-          title: "Sharing failed",
-          description: "Could not share this short",
+          title: "Shared successfully!",
+          description: "Short has been shared",
+        });
+      } catch (error) {
+        // User cancelled or error occurred
+        if ((error as Error).name !== 'AbortError') {
+          // Fallback to clipboard
+          await navigator.clipboard.writeText(shareUrl);
+          toast({
+            title: "Link copied!",
+            description: "Link copied to clipboard",
+          });
+        }
+      }
+    } else {
+      // Fallback for browsers without share API
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        toast({
+          title: "Link copied!",
+          description: "Link copied to clipboard",
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Could not copy link",
           variant: "destructive",
         });
-      });
-    } else {
-      navigator.clipboard.writeText(short.previewUrl);
-      toast({
-        title: "Link copied!",
-        description: "Preview link copied to clipboard",
-      });
+      }
     }
   };
 
@@ -92,7 +113,7 @@ const GeneratedShorts = ({ shorts }: GeneratedShortsProps) => {
                     onClick={() => window.open(short.downloadUrl!, '_blank')}
                   >
                     <Download className="h-4 w-4 mr-2" />
-                    View on YouTube
+                    Download
                   </Button>
                   <Button
                     variant="outline"
