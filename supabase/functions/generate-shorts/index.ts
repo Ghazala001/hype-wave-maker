@@ -95,7 +95,7 @@ serve(async (req) => {
         timestamp: moment.timestamp,
         // Use YouTube embed as preview until we have actual processed video
         previewUrl: `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`,
-        downloadUrl: null, // Would be Supabase Storage URL after processing
+        downloadUrl: `https://www.youtube.com/watch?v=${videoId}&t=${startTime}s`, // YouTube link with timestamp
       });
     }
 

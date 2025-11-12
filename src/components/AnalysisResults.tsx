@@ -93,7 +93,7 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
       
       toast({
         title: "Shorts Generated! 🎉",
-        description: `${results.shorts.length} viral shorts तैयार हैं`,
+        description: `${results.shorts.length} viral shorts are ready`,
       });
 
       // Scroll to shorts section
@@ -107,7 +107,7 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
       console.error('Error generating shorts:', error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Shorts generate करने में समस्या आई",
+        description: error instanceof Error ? error.message : "Failed to generate shorts",
         variant: "destructive",
       });
     } finally {
@@ -280,7 +280,7 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
             <div className="flex-1">
               <h3 className="text-xl font-semibold mb-2">Viral Moments Detected</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                {data.viralMoments.length} engaging moments जहाँ से shorts बनाए जा सकते हैं
+                {data.viralMoments.length} engaging moments where shorts can be created
               </p>
               <div className="space-y-3">
                 {data.viralMoments.map((moment, index) => (
@@ -307,10 +307,10 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
           <Card className="relative p-8 border-green-500/30 bg-gradient-to-br from-green-900/20 to-emerald-900/20 backdrop-blur-xl text-center">
             <Sparkles className="w-12 h-12 mx-auto mb-4 text-green-400" />
             <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
-              Viral Shorts बनाने के लिए तैयार?
+              Ready to Create Viral Shorts?
             </h3>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              हमारा AI आपकी video के सबसे engaging moments से 3 optimized short clips automatically create करेगा
+              Our AI will automatically create 3 optimized short clips from your video's most engaging moments
             </p>
             {data.viralMoments && data.viralMoments.length > 0 ? (
               <Button
@@ -322,18 +322,18 @@ const AnalysisResults = ({ data, onNewAnalysis }: AnalysisResultsProps) => {
                 {generatingShorts ? (
                   <>
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                    Shorts बना रहे हैं...
+                    Generating Shorts...
                   </>
                 ) : (
                   <>
                     <Sparkles className="mr-2 h-5 w-5" />
-                    3 Viral Shorts Generate करें
+                    Generate 3 Viral Shorts
                   </>
                 )}
               </Button>
             ) : (
               <p className="text-yellow-400 text-sm">
-                इस video में viral moments detect नहीं हुए। कृपया दूसरी video try करें।
+                No viral moments detected in this video. Please try another video.
               </p>
             )}
           </Card>

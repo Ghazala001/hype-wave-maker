@@ -87,15 +87,13 @@ const GeneratedShorts = ({ shorts }: GeneratedShortsProps) => {
 
                 {/* Action Buttons */}
                 <div className="flex gap-2">
-                  {short.downloadUrl && (
-                    <Button
-                      className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white"
-                      onClick={() => window.open(short.downloadUrl!, '_blank')}
-                    >
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
-                  )}
+                  <Button
+                    className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white"
+                    onClick={() => window.open(short.downloadUrl!, '_blank')}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    View on YouTube
+                  </Button>
                   <Button
                     variant="outline"
                     className="flex-1 border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/10"
