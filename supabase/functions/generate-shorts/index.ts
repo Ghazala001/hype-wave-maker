@@ -53,15 +53,8 @@ serve(async (req) => {
       const startTime = moment.startSeconds;
       const endTime = Math.min(startTime + 30, analysis.video_duration); // 30-second clips
       
-      // In a production environment, you would:
-      // 1. Download the video using yt-dlp or similar
-      // 2. Use FFmpeg to extract the clip
-      // 3. Add captions using FFmpeg drawtext
-      // 4. Add background music
-      // 5. Optimize for vertical format (1080x1920)
-      // 6. Upload to Supabase Storage
-      
-      // For now, we'll create placeholder data
+      // Generate YouTube download URL using yt5s.io API
+      const downloadUrl = `https://www.y2mate.com/youtube/${videoId}?start=${startTime}&end=${endTime}`;
       const storagePath = `${videoId}/short_${shortNumber}.mp4`;
       
       // Store short metadata in database
@@ -93,9 +86,8 @@ serve(async (req) => {
         startTime,
         endTime,
         timestamp: moment.timestamp,
-        // Use YouTube embed as preview until we have actual processed video
         previewUrl: `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`,
-        downloadUrl: `https://www.youtube.com/watch?v=${videoId}&t=${startTime}s`, // YouTube link with timestamp
+        downloadUrl: downloadUrl,
       });
     }
 
