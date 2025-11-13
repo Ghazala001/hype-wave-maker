@@ -113,7 +113,7 @@ const GeneratedShorts = ({ shorts }: GeneratedShortsProps) => {
                     onClick={() => window.open(short.downloadUrl!, '_blank')}
                   >
                     <Download className="h-4 w-4 mr-2" />
-                    Download
+                    Watch on YouTube
                   </Button>
                   <Button
                     variant="outline"
