@@ -44,7 +44,7 @@ serve(async (req) => {
 
     console.log('Found viral moments:', viralMoments.length);
 
-    // Generate shorts metadata (we'll create placeholders since actual video processing requires FFmpeg)
+    // Generate shorts with actual video processing
     const shorts = [];
     
     for (let i = 0; i < Math.min(3, viralMoments.length); i++) {
@@ -53,42 +53,96 @@ serve(async (req) => {
       const startTime = moment.startSeconds;
       const endTime = Math.min(startTime + 30, analysis.video_duration); // 30-second clips
       
-      // Generate YouTube download URL using yt5s.io API
-      const downloadUrl = `https://www.y2mate.com/youtube/${videoId}?start=${startTime}&end=${endTime}`;
       const storagePath = `${videoId}/short_${shortNumber}.mp4`;
       
-      // Store short metadata in database
-      const { data: shortData, error: insertError } = await supabase
-        .from('generated_shorts')
-        .insert({
-          analysis_id: analysisId,
-          short_number: shortNumber,
-          start_time: startTime,
-          end_time: endTime,
-          title: `${analysis.video_title} - Clip ${shortNumber}`,
-          description: moment.description,
-          storage_path: storagePath,
-          storage_url: `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`,
-        })
-        .select()
-        .single();
+      // Process video using yt-dlp and FFmpeg
+      console.log(`Processing clip ${shortNumber}: ${startTime}s to ${endTime}s`);
+      
+      try {
+        // Download and extract clip using yt-dlp with FFmpeg
+        const ytDlpCommand = new Deno.Command("yt-dlp", {
+          args: [
+            "-f", "best[height<=720]",
+            "--download-sections", `*${startTime}-${endTime}`,
+            "-o", `/tmp/clip_${shortNumber}.mp4`,
+            `https://www.youtube.com/watch?v=${videoId}`
+          ],
+        });
+        
+        const { code, stderr } = await ytDlpCommand.output();
+        
+        if (code !== 0) {
+          console.error('yt-dlp error:', new TextDecoder().decode(stderr));
+          throw new Error('Failed to process video');
+        }
+        
+        // Read the processed file
+        const videoFile = await Deno.readFile(`/tmp/clip_${shortNumber}.mp4`);
+        
+        // Upload to Supabase Storage
+        const { error: uploadError } = await supabase.storage
+          .from('video-clips')
+          .upload(storagePath, videoFile, {
+            contentType: 'video/mp4',
+            upsert: true
+          });
+        
+        if (uploadError) {
+          console.error('Storage upload error:', uploadError);
+          throw new Error('Failed to upload video');
+        }
+        
+        // Get public URL
+        const { data: urlData } = supabase.storage
+          .from('video-clips')
+          .getPublicUrl(storagePath);
+        
+        console.log(`Clip ${shortNumber} processed successfully`);
+        
+        // Store short metadata in database
+        const { data: shortData, error: insertError } = await supabase
+          .from('generated_shorts')
+          .insert({
+            analysis_id: analysisId,
+            short_number: shortNumber,
+            start_time: startTime,
+            end_time: endTime,
+            title: `${analysis.video_title} - Clip ${shortNumber}`,
+            description: moment.description,
+            storage_path: storagePath,
+            storage_url: urlData.publicUrl,
+          })
+          .select()
+          .single();
+        
+        // Clean up temp file
+        try {
+          await Deno.remove(`/tmp/clip_${shortNumber}.mp4`);
+        } catch (e) {
+          console.log('Temp file cleanup skipped');
+        }
 
-      if (insertError) {
-        console.error('Error inserting short:', insertError);
+        if (insertError) {
+          console.error('Error inserting short:', insertError);
+          continue;
+        }
+
+        shorts.push({
+          id: shortData.id,
+          shortNumber,
+          title: shortData.title,
+          description: moment.description,
+          startTime,
+          endTime,
+          timestamp: moment.timestamp,
+          previewUrl: `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`,
+          downloadUrl: urlData.publicUrl,
+        });
+      } catch (error) {
+        console.error(`Failed to process clip ${shortNumber}:`, error);
+        // Skip this clip and continue with the next one
         continue;
       }
-
-      shorts.push({
-        id: shortData.id,
-        shortNumber,
-        title: shortData.title,
-        description: moment.description,
-        startTime,
-        endTime,
-        timestamp: moment.timestamp,
-        previewUrl: `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`,
-        downloadUrl: downloadUrl,
-      });
     }
 
     console.log('Generated shorts metadata:', shorts.length);
@@ -97,7 +151,9 @@ serve(async (req) => {
       JSON.stringify({
         success: true,
         shorts,
-        message: 'Shorts metadata generated successfully. Note: Full video processing with FFmpeg requires server-side setup.',
+        message: shorts.length > 0 
+          ? 'Shorts processed and ready for download!' 
+          : 'Failed to process any shorts. Please try again.',
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
