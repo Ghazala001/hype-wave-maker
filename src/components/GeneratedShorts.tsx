@@ -110,10 +110,18 @@ const GeneratedShorts = ({ shorts }: GeneratedShortsProps) => {
                 <div className="flex gap-2">
                   <Button
                     className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white"
-                    onClick={() => window.open(short.downloadUrl!, '_blank')}
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = short.downloadUrl!;
+                      link.download = `${short.title}.mp4`;
+                      link.target = '_blank';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
                   >
                     <Download className="h-4 w-4 mr-2" />
-                    Watch on YouTube
+                    Download
                   </Button>
                   <Button
                     variant="outline"
